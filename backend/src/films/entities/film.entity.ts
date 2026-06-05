@@ -1,10 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { randomUUID } from 'crypto';
 import { FilmSchedule } from './film-schedule.entity';
 
 @Entity({ name: 'films' })
 export class Film {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('varchar')
   id: string;
+
+  @BeforeInsert()
+  genId() {
+    if (!this.id) this.id = randomUUID();
+  }
 
   @Column('float')
   rating: number;

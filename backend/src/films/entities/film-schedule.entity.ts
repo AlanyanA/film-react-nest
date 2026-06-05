@@ -1,10 +1,16 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { randomUUID } from 'crypto';
 import { Film } from './film.entity';
 
 @Entity({ name: 'schedules' })
 export class FilmSchedule {
   @PrimaryColumn('varchar')
   id: string;
+
+  @BeforeInsert()
+  genId() {
+    if (!this.id) this.id = randomUUID();
+  }
 
   @Column({ type: 'timestamptz' })
   daytime: Date;
