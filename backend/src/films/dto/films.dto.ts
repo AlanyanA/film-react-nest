@@ -1,4 +1,4 @@
-//TODO описать DTO для запросов к /films
+
 import { IsString, IsNumber, IsArray } from 'class-validator';
 
 export class FilmDto {

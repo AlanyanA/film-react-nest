@@ -8,7 +8,8 @@ import { FilmsRepository } from 'src/repository/films.repository';
 import { OrderResponseDto } from './dto/responseOrder.dto';
 import { randomUUID } from 'crypto';
 import { OrderItemDto } from './dto/order.dto';
-import { FilmDocument } from 'src/films/schemas/film.schema';
+import { Film } from 'src/films/entities/film.entity';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class OrderService {
@@ -46,8 +47,8 @@ export class OrderService {
 
   private async loadFilmsForTickets(
     dto: CreateOrderDto,
-  ): Promise<Map<string, FilmDocument>> {
-    const filmsCache = new Map<string, FilmDocument>();
+  ): Promise<Map<string, Film>> {
+    const filmsCache = new Map<string, Film>();
 
     for (const ticket of dto.tickets) {
       const filmId = ticket.film;
@@ -71,7 +72,7 @@ export class OrderService {
 
       const seatKey = `${ticket.row}:${ticket.seat}`;
 
-      if (session.taken.includes(seatKey)) {
+      if (!session.taken.includes(seatKey)) {
         throw new BadRequestException(`Seat ${seatKey} is already taken`);
       }
     }
@@ -81,7 +82,7 @@ export class OrderService {
 
   private async reserveSeats(
     dto: CreateOrderDto,
-    filmsCache: Map<string, FilmDocument>,
+    filmsCache: Map<string, Film>,
   ): Promise<void> {
     const updatedFilms = new Set<string>();
 
