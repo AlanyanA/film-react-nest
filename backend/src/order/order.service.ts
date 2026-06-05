@@ -9,7 +9,6 @@ import { OrderResponseDto } from './dto/responseOrder.dto';
 import { randomUUID } from 'crypto';
 import { OrderItemDto } from './dto/order.dto';
 import { Film } from 'src/films/entities/film.entity';
-import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class OrderService {
