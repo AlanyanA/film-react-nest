@@ -1,3 +1,6 @@
+# Docker Compose для продакшен-сервера (без локальной сборки).
+# Образы подтягиваются из GitHub Container Registry после push в main.
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -35,9 +38,6 @@ services:
       - app-network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
     image: ghcr.io/${IMAGE_OWNER}/film-react-nest-backend:latest
     container_name: backend
     restart: unless-stopped
@@ -55,9 +55,6 @@ services:
       - app-network
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
     image: ghcr.io/${IMAGE_OWNER}/film-react-nest-frontend:latest
     container_name: frontend
     restart: unless-stopped
@@ -67,9 +64,6 @@ services:
       - app-network
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
     image: ghcr.io/${IMAGE_OWNER}/film-react-nest-nginx:latest
     container_name: nginx
     restart: unless-stopped

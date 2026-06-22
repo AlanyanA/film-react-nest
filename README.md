@@ -1,36 +1,84 @@
 # FILM!
 
-## Установка
+**Ссылка на работающее приложение:** _замените на URL после деплоя, например http://your-name-film.nomoreparties.site/_
 
-### MongoDB
+## Быстрый старт через Docker
 
-Установите MongoDB скачав дистрибутив с официального сайта или с помощью пакетного менеджера вашей ОС. Также можно воспользоваться Docker (см. ветку `feat/docker`.
+1. Скопируйте `.env.example` в `.env` в корне проекта и укажите `IMAGE_OWNER` — ваш логин на GitHub.
+2. Запустите:
 
-Выполните скрипт `test/mongodb_initial_stub.js` в консоли `mongo`.
+```bash
+docker compose up -d --build
+```
+
+3. Приложение: http://localhost  
+4. pgAdmin: http://localhost:8080 (логин/пароль из `.env`)
+
+### Наполнение базы данных
+
+В pgAdmin добавьте сервер PostgreSQL:
+
+| Параметр | Значение |
+|----------|----------|
+| Host     | `postgres` |
+| Port     | `5432` |
+| Database | из `POSTGRES_DB` в `.env` |
+| Username | из `POSTGRES_USER` |
+| Password | из `POSTGRES_PASSWORD` |
+
+Выполните SQL-скрипты по порядку из `backend/test/`:
+
+1. `prac.init.sql` — создание таблиц
+2. `prac.films.sql` — тестовые фильмы
+3. `prac.schedules.sql` — расписание сеансов
+
+## Локальная разработка
+
+### PostgreSQL
+
+Запустите PostgreSQL (через Docker или локально):
+
+```bash
+docker compose up -d postgres
+```
 
 ### Бэкенд
 
-Перейдите в папку с исходным кодом бэкенда
+```bash
+cd backend
+npm ci
+cp .env.example .env   # настройте DATABASE_URL
+npm run start:dev
+```
 
-`cd backend`
+Переменные окружения бэкенда:
 
-Установите зависимости (точно такие же, как в package-lock.json) помощью команд
+| Переменная | Описание |
+|------------|----------|
+| `DATABASE_DRIVER` | `postgres` |
+| `DATABASE_URL` | строка подключения к PostgreSQL |
+| `LOGGER_TYPE` | `dev` / `json` / `tskv` |
+| `PORT` | порт API (по умолчанию 3000) |
 
-`npm ci` или `yarn install --frozen-lockfile`
+### Фронтенд
 
-Создайте `.env` файл из примера `.env.example`, в нём укажите:
+```bash
+cd frontend
+npm ci
+npm run dev
+```
 
-* `DATABASE_DRIVER` - тип драйвера СУБД - в нашем случае это `mongodb` 
-* `DATABASE_URL` - адрес СУБД MongoDB, например `mongodb://127.0.0.1:27017/practicum`.  
+## Тестирование
 
-MongoDB должна быть установлена и запущена.
+```bash
+cd backend
+npm test
+npm run lint
+```
 
-Запустите бэкенд:
+## CI/CD
 
-`npm start:debug`
+- `.github/workflows/deploy.yml` — при push в `main` собирает и публикует образы в `ghcr.io/<ваш-логин>/film-react-nest-*`.
+- `docker-compose.prod.yml` — для продакшен-сервера (только pull образов, без сборки).
 
-Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
-
-
-
-
+Подробные шаги деплоя на Yandex Cloud — в файле [USER_TASKS.md](./USER_TASKS.md).

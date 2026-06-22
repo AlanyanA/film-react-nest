@@ -66,7 +66,9 @@ export class OrderService {
       const session = film.schedule.find((item) => item.id === ticket.session);
 
       if (!session) {
-        throw new NotFoundException(`Session with id ${ticket.session} not found`);
+        throw new NotFoundException(
+          `Session with id ${ticket.session} not found`,
+        );
       }
 
       const seatKey = `${ticket.row}:${ticket.seat}`;
@@ -95,7 +97,9 @@ export class OrderService {
       const session = film.schedule.find((item) => item.id === ticket.session);
 
       if (!session) {
-        throw new NotFoundException(`Session with id ${ticket.session} not found`);
+        throw new NotFoundException(
+          `Session with id ${ticket.session} not found`,
+        );
       }
 
       session.taken.push(`${ticket.row}:${ticket.seat}`);
