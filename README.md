@@ -1,7 +1,6 @@
 # FILM!
 
-http://89.169.173.70/
-
+http://arman-film.nomorepartiessite.ru
 
 ## Быстрый старт через Docker
 
