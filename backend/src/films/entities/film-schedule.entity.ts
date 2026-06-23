@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { randomUUID } from 'crypto';
 import { Film } from './film.entity';
 
@@ -30,7 +37,10 @@ export class FilmSchedule {
   @Column('text', { array: true, default: () => 'ARRAY[]::text[]' })
   taken: string[];
 
+  @Column('varchar', { name: 'filmId' })
+  filmId: string;
+
   @ManyToOne(() => Film, (film) => film.schedule, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'film_id' })
+  @JoinColumn({ name: 'filmId' })
   film: Film;
 }

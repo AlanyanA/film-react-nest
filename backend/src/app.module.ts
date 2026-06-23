@@ -35,7 +35,7 @@ import { FilmSchedule } from './films/entities/film-schedule.entity';
           password: configService.get<string>('DATABASE_PASSWORD'),
           entities: [Film, FilmSchedule],
           autoLoadEntities: false,
-          synchronize: true,
+          synchronize: configService.get<string>('NODE_ENV') !== 'production',
         };
       },
     }),

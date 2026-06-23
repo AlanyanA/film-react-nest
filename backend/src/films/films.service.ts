@@ -48,8 +48,6 @@ export class FilmsService {
     };
   }
 
-
-
   async getFilmSchedule(filmId: string): Promise<FilmScheduleResponseDto> {
     const film = await this.filmsRepository.getById(filmId);
 

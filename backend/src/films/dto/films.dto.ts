@@ -1,4 +1,3 @@
-
 import { IsString, IsNumber, IsArray } from 'class-validator';
 
 export class FilmDto {
