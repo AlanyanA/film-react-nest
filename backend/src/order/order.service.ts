@@ -73,7 +73,7 @@ export class OrderService {
 
       const seatKey = `${ticket.row}:${ticket.seat}`;
 
-      if (!session.taken.includes(seatKey)) {
+      if (session.taken.includes(seatKey)) {
         throw new BadRequestException(`Seat ${seatKey} is already taken`);
       }
     }
