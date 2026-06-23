@@ -37,7 +37,10 @@ export class FilmSchedule {
   @Column('text', { array: true, default: () => 'ARRAY[]::text[]' })
   taken: string[];
 
+  @Column('varchar')
+  filmId: string;
+
   @ManyToOne(() => Film, (film) => film.schedule, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'film_id' })
+  @JoinColumn({ name: 'filmId' })
   film: Film;
 }
